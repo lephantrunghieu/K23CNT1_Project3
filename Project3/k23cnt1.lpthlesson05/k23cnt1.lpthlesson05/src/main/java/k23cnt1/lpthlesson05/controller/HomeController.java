@@ -10,6 +10,19 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class HomeController {
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("title", "Devmaster::Trang chủ");
+        return "home";
+    }
+    @GetMapping("/about")
+    public String about(Model model) {
+        return "about";
+    }
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        return "contact";
+    }
     @GetMapping
     public String index(){
         return "index";
@@ -19,11 +32,12 @@ public class HomeController {
         List<Info> profile = new ArrayList<>();
 // Tạo thông tin profile
         profile.add(new Info("Le Phan Trung Hieu",
-                "Hieu",
+                "hieudev",
                 "lephantrunghieu@gmail.com",
-        "lehieu.vn"));
+                "https://devmaster.edu.vn"));
+
 // Đưa profile vào model
-        model.addAttribute("LpthProfile", profile);
+        model.addAttribute("Profile", profile);
         return "profile";
     }
 }
