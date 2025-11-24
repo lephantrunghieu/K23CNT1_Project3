@@ -2,15 +2,15 @@ package k23cnt.lpthDay06Lab.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.List;
 @Entity
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
 public class lpthAuthor {
 
     @Id
@@ -24,8 +24,9 @@ public class lpthAuthor {
     String lpthPhone;
     String lpthAddress;
     String lpthImgUrl;
-    String lpthAcive;
+    String lpthActive;
 
+    // Tạo mối quan hệ với bảng book
     @ManyToMany(mappedBy = "lpthAuthors")
-    Set<lpthBook> lpthBooks;
+    private List<lpthBook> books = new ArrayList<>();
 }

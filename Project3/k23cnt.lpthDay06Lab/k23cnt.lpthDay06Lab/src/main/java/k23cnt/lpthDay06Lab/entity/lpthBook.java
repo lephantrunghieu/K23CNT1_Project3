@@ -1,8 +1,9 @@
 package k23cnt.lpthDay06Lab.entity;
-
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -10,7 +11,9 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Data
+@Builder
+
 public class lpthBook {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,5 +33,5 @@ public class lpthBook {
             joinColumns = @JoinColumn(name = "lpthBookId"),
             inverseJoinColumns = @JoinColumn(name = "lpthAuthorId")
     )
-    Set<lpthAuthor> lpthAuthors;
+    private List<lpthAuthor> lpthAuthors = new ArrayList<>();
 }
