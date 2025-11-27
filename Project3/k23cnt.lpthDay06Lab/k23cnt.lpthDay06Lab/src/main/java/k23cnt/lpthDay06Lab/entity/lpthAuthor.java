@@ -2,31 +2,27 @@ package k23cnt.lpthDay06Lab.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
 public class lpthAuthor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long lpthId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long lpthId;
 
-    String lpthCode;
-    String lpthName;
-    String lpthEmail;
-    String lpthDescription;
-    String lpthPhone;
-    String lpthAddress;
-    String lpthImgUrl;
-    String lpthActive;
+    private String lpthCode;
+    private String lpthName;
+    private String lpthEmail;
+    private String lpthDescription;
+    private String lpthPhone;
 
-    // Tạo mối quan hệ với bảng book
-    @ManyToMany(mappedBy = "lpthAuthors")
-    private List<lpthBook> books = new ArrayList<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<lpthBookAuthor> bookAuthors = new ArrayList<>();
 }

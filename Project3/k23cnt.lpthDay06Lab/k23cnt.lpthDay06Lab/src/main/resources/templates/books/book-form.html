@@ -1,102 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book Form</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <title>Thêm/Sửa sách</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="background: #ccc">
-<section class="container my-3 p-3 bg-white">
-    <form th:action="@{/books/new}" th:object="${book}" method="post" enctype="multipart/form-data">
-        <!-- Hidden ID -->
-        <input type="hidden" th:if="${book.lpthId != null}" th:value="${book.lpthId}" name="lpthId"/>
+<body>
+<div class="container mt-4">
+    <h2 th:text="${book.lpthId == null} ? 'Thêm sách mới' : 'Sửa sách'"></h2>
 
-        <div class="card">
-            <div class="card-header">
-                <h1 th:text="${book.lpthId != null ? 'Edit Book' : 'Create Book'}">Book Form</h1>
-            </div>
-
-            <div class="card-body">
-                <!-- Code -->
-                <div class="row mb-3">
-                    <label for="lpthCode" class="col-sm-2 col-form-label">Code</label>
-                    <div class="col-sm-10">
-                        <input type="text" th:field="*{lpthCode}" placeholder="Book Code" class="form-control" id="lpthCode">
-                    </div>
-                </div>
-
-                <!-- Name -->
-                <div class="row mb-3">
-                    <label for="lpthName" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" th:field="*{lpthName}" placeholder="Book Name" class="form-control" id="lpthName">
-                    </div>
-                </div>
-
-                <!-- Image -->
-                <div class="row mb-3">
-                    <label for="imageBook" class="col-sm-2 col-form-label">Image</label>
-                    <div class="col-sm-10">
-                        <input type="file" name="imageBook" id="imageBook" class="form-control"/>
-                        <input type="hidden" th:field="*{lpthImgUrl}" class="form-control" id="lpthImgUrl"/>
-                    </div>
-                </div>
-
-                <!-- Description -->
-                <div class="row mb-3">
-                    <label for="lpthDescription" class="col-sm-2 col-form-label">Description</label>
-                    <div class="col-sm-10">
-                        <textarea th:field="*{lpthDescription}" rows="2" class="form-control" id="lpthDescription"></textarea>
-                    </div>
-                </div>
-
-                <!-- Quantity -->
-                <div class="row mb-3">
-                    <label for="lpthQuantity" class="col-sm-2 col-form-label">Quantity</label>
-                    <div class="col-sm-10">
-                        <input type="number" th:field="*{lpthQuantity}" placeholder="Book Quantity" class="form-control" id="lpthQuantity">
-                    </div>
-                </div>
-
-                <!-- Price -->
-                <div class="row mb-3">
-                    <label for="lpthPrice" class="col-sm-2 col-form-label">Price</label>
-                    <div class="col-sm-10">
-                        <input type="number" th:field="*{lpthPrice}" placeholder="Book Price" class="form-control" id="lpthPrice">
-                    </div>
-                </div>
-
-                <!-- Authors -->
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Authors</label>
-                    <div class="col-sm-10 d-flex flex-wrap">
-                        <div th:each="author : ${authors}" class="mx-2 px-2">
-                            <input type="checkbox" name="authorIds"
-                                   th:attr="id='chkAuth_'+${author.lpthId}" th:value="${author.lpthId}"
-                                   th:checked="${book.lpthAuthors != null ? book.lpthAuthors.contains(author) : false}"/>
-                            <label th:attr="for='chkAuth_'+${author.lpthId}" th:text="${author.lpthName}">Author Name</label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active -->
-                <div class="row mb-3">
-                    <label for="lpthActive" class="col-sm-2 col-form-label">Active</label>
-                    <div class="col-sm-10">
-                        <input type="checkbox" th:field="*{lpthActive}" id="lpthActive"/>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success"
-                        th:text="${book.lpthId != null ? 'Update' : 'Create'}">Save</button>
-                <a th:href="@{/books}" class="btn btn-secondary">Back to list</a>
-            </div>
+    <form th:action="@{/books/save}" th:object="${book}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Tên sách:</label>
+            <input type="text" th:field="*{lpthTitle}" class="form-control" placeholder="Tên sách"/>
         </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mã sách:</label>
+            <input type="text" th:field="*{lpthCode}" class="form-control" placeholder="Mã sách"/>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ảnh sách:</label>
+            <input type="file" name="imageBook" class="form-control"/>
+        </div>
+
+        <h4>Chọn tác giả</h4>
+        <div th:each="author : ${authors}" class="form-check">
+            <input type="checkbox" th:id="'author-' + ${author.lpthId}"
+                   th:name="authorIds" th:value="${author.lpthId}"
+                   class="form-check-input author-checkbox"/>
+            <label th:for="'author-' + ${author.lpthId}" th:text="${author.lpthName}" class="form-check-label"></label>
+
+            <input type="radio" th:name="editorId" th:value="${author.lpthId}"
+                   class="form-check-input editor-radio ms-3" disabled/>
+            <label class="form-check-label">Chủ biên</label>
+        </div>
+
+        <button type="submit" class="btn btn-success mt-3">Lưu</button>
+        <a th:href="@{/books}" class="btn btn-secondary mt-3">Hủy</a>
     </form>
-</section>
+</div>
+
+<script>
+    const checkboxes = document.querySelectorAll('.author-checkbox');
+    const radios = document.querySelectorAll('.editor-radio');
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            radios.forEach(r => r.disabled = true);
+            checkboxes.forEach(cb2 => {
+                if(cb2.checked) {
+                    document.querySelector(`.editor-radio[value='${cb2.value}']`).disabled = false;
+                }
+            });
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
